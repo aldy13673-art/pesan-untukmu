@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EH, KAMU! BACA INI</title>
+<style>
+body {
+  background: #050005;
+  color: white;
+  font-family: monospace;
+  padding: 16px;
+  line-height: 1.6;
+}
+main { max-width: 600px; margin: auto; }
+.garis {
+  height: 3px;
+  background: #ff00dd;
+  box-shadow: 0 0 10px #ff00dd;
+  margin: 22px 0;
+}
+h1 {
+  text-align: center;
+  color: #ff00dd;
+  font-size: 23px;
+  text-shadow: 0 0 10px #ff00dd;
+}
+.kata { margin: 28px 0; }
+p { margin: 8px 0; }
+#penutup { color: #ff66e8; }
+button {
+  width: 100%;
+  padding: 14px;
+  background: #ff00dd;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<main>
+<div class="garis"></div>
+<h1>EH, KAMU! BACA INI</h1>
+<div class="garis"></div>
+<div id="isi"></div>
+<div class="garis"></div>
+<p id="penutup"></p>
+<button onclick="mulai()">ULANGI ANIMASI</button>
+</main>
+<script>
+const rayuan = [
+[
+"Kamu tau ga perbedaan kamu sama jam 9??",
+"Kalo jam 9 kesiangan, kalo kamu kesayangan. ❤️"
+],
+[
+"Kamu tau ga bedanya kamus sama kamu??",
+"Kalo kamus terdapat banyak kalimat,",
+'kalo kamu cuma 1 kalimat...',
+'"I LOVE YOU" 💗'
+],
+[
+"Tau ga bedanya kamu sama lukisan??",
+"Kalo lukisan makin lama makin antik,",
+"kalo kamu makin lama makin cantik. 😳"
+],
+[
+"Apa bedanya kamu sama burung Garuda?",
+"Burung Garuda selalu di dadaku,",
+"kalo kamu selalu di hatiku. ❤️"
+],
+[
+"Kamu tau ga perbedaan kamu sama spidol permanen?",
+"Kalo spidol permanen ga bisa dihapus di papan tulis,",
+"kalo kamu ga bisa dihapus di hatiku. 🥹❤️"
+]
+];
+
+let sesi = 0;
+const tunggu = ms => new Promise(r => setTimeout(r, ms));
+
+async function tulis(teks, el, id) {
+  for (const huruf of teks) {
+    if (id !== sesi) return false;
+    el.textContent += huruf;
+    await tunggu(35);
+  }
+  return id === sesi;
+}
+
+async function mulai() {
+  const id = ++sesi;
+  const isi = document.getElementById("isi");
+  const penutup = document.getElementById("penutup");
+  isi.innerHTML = "";
+  penutup.textContent = "";
+
+  for (let i = 0; i < rayuan.length; i++) {
+    const bagian = document.createElement("div");
+    bagian.className = "kata";
+    isi.appendChild(bagian);
+
+    for (const kalimat of rayuan[i]) {
+      const p = document.createElement("p");
+      bagian.appendChild(p);
+      if (!await tulis(kalimat, p, id)) return;
+    }
+    await tunggu(600);
+  }
+  await tulis("Ini untuk kamu yang baca", penutup, id);
+}
+mulai();
+</script>
+</body>
+</html>
